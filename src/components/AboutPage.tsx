@@ -25,9 +25,22 @@ export function AboutPage({ isDark = true, onBack }: AboutPageProps) {
         </button>
 
         {/* Title */}
-        <h1 className={`text-3xl font-semibold tracking-tighter mb-6 ${headingColor}`}>
+        <h1 className={`text-3xl font-semibold tracking-tighter mb-3 ${headingColor}`}>
           AI Upskilling for Product Designers: The E-P-I-A-S × SAE Framework
         </h1>
+
+        {/* Byline */}
+        <p className={`text-sm mb-8 ${mutedColor}`}>
+          <a
+            href="https://www.linkedin.com/in/johnmaeda/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`transition-colors ${linkColor}`}
+          >
+            John Maeda
+          </a>
+          {' · February 9, 2026'}
+        </p>
 
         {/* Intro */}
         <div className={`prose prose-sm leading-relaxed space-y-4 mb-8 ${textColor}`}>
