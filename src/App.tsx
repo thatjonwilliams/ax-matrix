@@ -5,6 +5,7 @@ import { AssessmentFlow } from './components/AssessmentFlow';
 import { ResultsView } from './components/ResultsView';
 import { Footer } from './components/Footer';
 import { GlossaryPage } from './components/GlossaryPage';
+import { AboutPage } from './components/AboutPage';
 import { useAssessment } from './hooks/useAssessment';
 import { Screen } from './types';
 
@@ -31,7 +32,7 @@ function App() {
     return state.result ? 'welcome' : 'welcome';
   });
 
-  // Track previous screen for glossary back navigation
+  // Track previous screen for back navigation from About/Glossary
   const [previousScreen, setPreviousScreen] = useState<Screen>('welcome');
 
   const handleStart = () => {
@@ -56,6 +57,15 @@ function App() {
     setScreen('welcome');
   };
 
+  const handleAboutClick = () => {
+    setPreviousScreen(screen);
+    setScreen('about');
+  };
+
+  const handleAboutBack = () => {
+    setScreen(previousScreen);
+  };
+
   const handleGlossaryClick = () => {
     setPreviousScreen(screen);
     setScreen('glossary');
@@ -69,6 +79,9 @@ function App() {
   if (screen === 'assessment' && state.isComplete && state.result) {
     setScreen('results');
   }
+
+  // Determine if footer should be shown
+  const showFooter = screen !== 'glossary' && screen !== 'about';
 
   return (
     <div
@@ -104,9 +117,17 @@ function App() {
         )}
 
         {screen === 'glossary' && <GlossaryPage isDark={isDark} onBack={handleGlossaryBack} />}
+
+        {screen === 'about' && <AboutPage isDark={isDark} onBack={handleAboutBack} />}
       </div>
 
-      {screen !== 'glossary' && <Footer isDark={isDark} onGlossaryClick={handleGlossaryClick} />}
+      {showFooter && (
+        <Footer
+          isDark={isDark}
+          onAboutClick={handleAboutClick}
+          onGlossaryClick={handleGlossaryClick}
+        />
+      )}
     </div>
   );
 }

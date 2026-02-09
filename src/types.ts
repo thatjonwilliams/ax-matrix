@@ -69,4 +69,4 @@ export interface AssessmentState {
 }
 
 // Screen types for navigation
-export type Screen = 'welcome' | 'assessment' | 'results' | 'glossary';
+export type Screen = 'welcome' | 'assessment' | 'results' | 'glossary' | 'about';
