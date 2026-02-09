@@ -52,6 +52,10 @@ function App() {
     setIsDark(dark);
   };
 
+  const handleLogoClick = () => {
+    setScreen('welcome');
+  };
+
   const handleGlossaryClick = () => {
     setPreviousScreen(screen);
     setScreen('glossary');
@@ -70,7 +74,7 @@ function App() {
     <div
       className={`min-h-screen flex flex-col transition-colors ${isDark ? 'bg-grey-950 text-grey-100' : 'bg-grey-50 text-grey-900'}`}
     >
-      <Header onThemeChange={handleThemeChange} />
+      <Header onThemeChange={handleThemeChange} onLogoClick={handleLogoClick} />
 
       <div className="flex-1">
         {screen === 'welcome' && (

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 
 interface HeaderProps {
   onThemeChange?: (isDark: boolean) => void;
+  onLogoClick?: () => void;
 }
 
-export function Header({ onThemeChange }: HeaderProps) {
+export function Header({ onThemeChange, onLogoClick }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
@@ -30,9 +31,12 @@ export function Header({ onThemeChange }: HeaderProps) {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-colors ${isDark ? 'bg-grey-950' : 'bg-grey-50'}`}>
       <div className="grid-container h-16 items-center" style={{ display: 'flex', maxWidth: 'none' }}>
         {/* Logo */}
-        <div className={`font-mono text-sm tracking-wider ${isDark ? 'text-grey-100' : 'text-grey-900'}`}>
+        <button
+          onClick={onLogoClick}
+          className={`font-mono text-sm tracking-wider transition-colors ${isDark ? 'text-grey-100 hover:text-grey-300' : 'text-grey-900 hover:text-grey-600'}`}
+        >
           AX MATRIX
-        </div>
+        </button>
 
         <div className="flex-1" />
 
