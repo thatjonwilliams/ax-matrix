@@ -79,15 +79,10 @@ export function QuestionCard({
 
       {/* Question - h3 size, semi-bold */}
       <h2
-        className={`text-2xl font-semibold tracking-tighter mb-3 leading-snug ${isDark ? 'text-grey-100' : 'text-grey-900'}`}
+        className={`text-2xl font-semibold tracking-tighter mb-8 leading-snug ${isDark ? 'text-grey-100' : 'text-grey-900'}`}
       >
         {question.text}
       </h2>
-
-      {/* Checklist text as subheading */}
-      <p className={`text-base mb-8 ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
-        {question.checklistText}
-      </p>
 
       {/* Answer buttons - No on left, Yes on right */}
       <div className="flex gap-3 mb-6">
@@ -106,6 +101,9 @@ export function QuestionCard({
       <div className={`${isDesktop ? 'flex gap-8' : ''}`}>
         {/* Explanation section */}
         <div className={`${isDesktop ? 'flex-1' : 'mb-6'}`}>
+          <h3 className={`text-xs font-mono uppercase tracking-wider mb-3 ${isDark ? 'text-grey-500' : 'text-grey-500'}`}>
+            What this means
+          </h3>
           <p className={`prose text-sm leading-relaxed ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
             {isExplanationExpanded || !shouldTruncate ? question.explanation : truncatedExplanation}
           </p>
