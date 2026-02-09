@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Geist UI inspired variables */
+    --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    --font-mono: 'Geist Mono', Menlo, Monaco, 'Lucida Console', monospace;
+
+    /* Greyscale palette */
+    --grey-50: #fafafa;
+    --grey-100: #f5f5f5;
+    --grey-200: #eaeaea;
+    --grey-300: #d4d4d4;
+    --grey-400: #999999;
+    --grey-500: #888888;
+    --grey-600: #666666;
+    --grey-700: #444444;
+    --grey-800: #333333;
+    --grey-900: #111111;
+    --grey-950: #000000;
+
+    /* Geist UI spacing base */
+    --geist-gap: 16pt;
+    --geist-gap-half: 8pt;
+    --geist-gap-quarter: 4pt;
+    --geist-page-margin: 16pt;
+    --geist-page-width: 782pt;
+    --geist-radius: 5px;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.625;
+    letter-spacing: -0.005625em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Default to dark mode */
+  html {
+    color-scheme: dark;
+  }
+
+  html.light {
+    color-scheme: light;
+  }
+
+  /* Geist UI Typography - Headlines semi-bold (600) */
+  h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+  }
+
+  h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+
+  h6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+
+  /* Body text - left aligned */
+  p, li, dd {
+    text-align: left;
+    line-height: 1.625;
+  }
+
+  /* Small text */
+  small {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  /* Code */
+  code, pre {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  /* Horizontal rules - 1px */
+  hr {
+    border: none;
+    border-top: 1px solid var(--grey-800);
+  }
+
+  .light hr {
+    border-color: var(--grey-200);
+  }
+}
+
+@layer components {
+  /* Geist UI 24-column grid container */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(24, minmax(0, 1fr));
+    gap: var(--geist-gap);
+    padding-left: var(--geist-page-margin);
+    padding-right: var(--geist-page-margin);
+    max-width: calc(var(--geist-page-width) + var(--geist-page-margin) * 2);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Responsive gap adjustments */
+  @media (max-width: 650px) {
+    .grid-container {
+      gap: var(--geist-gap-half);
+      padding-left: var(--geist-gap-half);
+      padding-right: var(--geist-gap-half);
+    }
+  }
+
+  /* Column span utilities for 24-col grid */
+  .col-span-full { grid-column: span 24 / span 24; }
+  .col-span-12 { grid-column: span 12 / span 12; }
+  .col-span-16 { grid-column: span 16 / span 16; }
+  .col-span-18 { grid-column: span 18 / span 18; }
+  .col-span-20 { grid-column: span 20 / span 20; }
+  .col-start-3 { grid-column-start: 3; }
+  .col-start-4 { grid-column-start: 4; }
+  .col-start-5 { grid-column-start: 5; }
+
+  @media (max-width: 900px) {
+    .md\:col-span-full { grid-column: span 24 / span 24; }
+    .md\:col-start-1 { grid-column-start: 1; }
+  }
+
+  @media (max-width: 650px) {
+    .sm\:col-span-full { grid-column: span 24 / span 24; }
+    .sm\:col-start-1 { grid-column-start: 1; }
+  }
+
+  /* Pill button - outline */
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 150ms ease;
+    border: 1px solid var(--grey-700);
+    background: transparent;
+    color: var(--grey-100);
+  }
+
+  .btn-pill:hover {
+    background: var(--grey-800);
+    border-color: var(--grey-600);
+  }
+
+  .light .btn-pill {
+    border-color: var(--grey-300);
+    color: var(--grey-900);
+  }
+
+  .light .btn-pill:hover {
+    background: var(--grey-100);
+    border-color: var(--grey-400);
+  }
+
+  /* Pill button - filled */
+  .btn-pill-filled {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 150ms ease;
+    border: 1px solid var(--grey-100);
+    background: var(--grey-100);
+    color: var(--grey-900);
+  }
+
+  .btn-pill-filled:hover {
+    background: var(--grey-200);
+    border-color: var(--grey-200);
+  }
+
+  .light .btn-pill-filled {
+    background: var(--grey-900);
+    border-color: var(--grey-900);
+    color: var(--grey-100);
+  }
+
+  .light .btn-pill-filled:hover {
+    background: var(--grey-800);
+    border-color: var(--grey-800);
+  }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--grey-800);
+  }
+
+  .light .divider {
+    background: var(--grey-200);
+  }
+}
+
+@layer utilities {
+  /* Geist letter spacing utilities */
+  .tracking-geist-tight { letter-spacing: -0.02em; }
+  .tracking-geist-body { letter-spacing: -0.005625em; }
+
+  /* Minimal scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--grey-500);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--grey-600);
+  }
+}
