@@ -34,7 +34,6 @@ export function QuestionCard({
 
   // On desktop, start expanded; on mobile, start collapsed
   const [isExplanationExpanded, setIsExplanationExpanded] = useState(isDesktop);
-  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
 
   // Update expansion state when screen size changes
   useEffect(() => {
@@ -80,10 +79,15 @@ export function QuestionCard({
 
       {/* Question - h3 size, semi-bold */}
       <h2
-        className={`text-2xl font-semibold tracking-tighter mb-8 leading-snug ${isDark ? 'text-grey-100' : 'text-grey-900'}`}
+        className={`text-2xl font-semibold tracking-tighter mb-3 leading-snug ${isDark ? 'text-grey-100' : 'text-grey-900'}`}
       >
         {question.text}
       </h2>
+
+      {/* Checklist text as subheading */}
+      <p className={`text-base mb-8 ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
+        {question.checklistText}
+      </p>
 
       {/* Answer buttons - No on left, Yes on right */}
       <div className="flex gap-3 mb-6">
@@ -97,44 +101,32 @@ export function QuestionCard({
 
       <div className={`h-px mb-6 ${isDark ? 'bg-grey-800' : 'bg-grey-200'}`} />
 
-      {/* Explanation section */}
-      <div className="mb-4">
-        <p className={`prose text-sm leading-relaxed ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
-          {isExplanationExpanded || !shouldTruncate ? question.explanation : truncatedExplanation}
-        </p>
-        {shouldTruncate && (
-          <button
-            onClick={() => setIsExplanationExpanded(!isExplanationExpanded)}
-            className={`mt-2 text-sm font-medium transition-colors ${
-              isDark ? 'text-grey-300 hover:text-grey-100' : 'text-grey-700 hover:text-grey-900'
-            }`}
-          >
-            {isExplanationExpanded ? 'Show less' : 'Read more'}
-          </button>
-        )}
-      </div>
-
-      {/* Resources accordion */}
-      {question.resources && question.resources.length > 0 && (
-        <div className="mb-6">
-          <button
-            onClick={() => setIsResourcesOpen(!isResourcesOpen)}
-            className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-              isDark ? 'text-grey-300 hover:text-grey-100' : 'text-grey-700 hover:text-grey-900'
-            }`}
-          >
-            <span
-              className={`inline-block transition-transform duration-200 ${isResourcesOpen ? 'rotate-90' : ''}`}
+      {/* Below the rule: Explanation and Resources */}
+      {/* Desktop: two columns. Mobile: stacked */}
+      <div className={`${isDesktop ? 'flex gap-8' : ''}`}>
+        {/* Explanation section */}
+        <div className={`${isDesktop ? 'flex-1' : 'mb-6'}`}>
+          <p className={`prose text-sm leading-relaxed ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
+            {isExplanationExpanded || !shouldTruncate ? question.explanation : truncatedExplanation}
+          </p>
+          {shouldTruncate && (
+            <button
+              onClick={() => setIsExplanationExpanded(!isExplanationExpanded)}
+              className={`mt-2 text-sm font-medium transition-colors ${
+                isDark ? 'text-grey-300 hover:text-grey-100' : 'text-grey-700 hover:text-grey-900'
+              }`}
             >
-              →
-            </span>
-            Resources
-          </button>
-          <div
-            className={`accordion-content overflow-hidden transition-all duration-200 ease-out ${
-              isResourcesOpen ? 'max-h-96 opacity-100 mt-3' : 'max-h-0 opacity-0'
-            }`}
-          >
+              {isExplanationExpanded ? 'Show less' : 'Read more'}
+            </button>
+          )}
+        </div>
+
+        {/* Resources - Desktop: right column, Mobile: below explanation */}
+        {question.resources && question.resources.length > 0 && (
+          <div className={`${isDesktop ? 'w-64 flex-shrink-0' : ''}`}>
+            <h3 className={`text-xs font-mono uppercase tracking-wider mb-3 ${isDark ? 'text-grey-500' : 'text-grey-500'}`}>
+              Resources
+            </h3>
             <ul className="space-y-2">
               {question.resources.map((resource, index) => (
                 <li key={index}>
@@ -154,9 +146,8 @@ export function QuestionCard({
               ))}
             </ul>
           </div>
-        </div>
-      )}
-
+        )}
+      </div>
     </div>
   );
 }

@@ -39,6 +39,7 @@ export interface QuestionResource {
 export interface Question {
   id: number;
   text: string;
+  checklistText: string; // Original checklist text from the framework document
   saeLevel: SAELevel;
   inverted?: boolean; // If true, "No" counts as a positive answer for this level
   explanation: string; // Full explanation text (from "What this means" + "How to tell if this is you")
