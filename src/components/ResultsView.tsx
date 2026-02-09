@@ -32,7 +32,7 @@ export function ResultsView({ result, onRetake, isDark = true }: ResultsViewProp
   const summary = getResultSummary(result);
 
   const saeLevels: SAELevel[] = [0, 1, 2, 3, 4, 5];
-  const epiasStages: EPIASStage[] = [5, 4, 3, 2, 1];
+  const epiasStages: EPIASStage[] = [1, 2, 3, 4, 5]; // E first in key
 
   return (
     <div className="pt-24 pb-12 px-5 sm:px-10">
