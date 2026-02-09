@@ -149,8 +149,8 @@
   @media (max-width: 650px) {
     .grid-container {
       gap: var(--geist-gap-half);
-      padding-left: var(--geist-gap-half);
-      padding-right: var(--geist-gap-half);
+      padding-left: 20px;
+      padding-right: 20px;
     }
   }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Question, SAE_LEVEL_NAMES } from '../types';
 
 interface QuestionCardProps {
@@ -21,8 +21,25 @@ export function QuestionCard({
   isDark = true,
 }: QuestionCardProps) {
   const levelName = SAE_LEVEL_NAMES[question.saeLevel];
-  const [isExplanationExpanded, setIsExplanationExpanded] = useState(false);
+
+  // Check if we're on desktop (768px+)
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  // On desktop, start expanded; on mobile, start collapsed
+  const [isExplanationExpanded, setIsExplanationExpanded] = useState(isDesktop);
   const [isResourcesOpen, setIsResourcesOpen] = useState(false);
+
+  // Update expansion state when screen size changes
+  useEffect(() => {
+    setIsExplanationExpanded(isDesktop);
+  }, [isDesktop]);
 
   // Truncate explanation to ~120 characters at word boundary
   const truncateLength = 120;
@@ -33,13 +50,31 @@ export function QuestionCard({
 
   return (
     <div className="w-full">
-      {/* Level indicator */}
-      <div className="mb-6">
+      {/* Top row: Back, Level indicator, and question count */}
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          {canGoBack && onBack ? (
+            <button
+              onClick={onBack}
+              className={`text-xs font-mono uppercase tracking-wider transition-colors ${
+                isDark ? 'text-grey-500 hover:text-grey-300' : 'text-grey-500 hover:text-grey-700'
+              }`}
+            >
+              ← Back
+            </button>
+          ) : (
+            <span className="text-xs font-mono uppercase tracking-wider invisible">← Back</span>
+          )}
+          <span
+            className={`text-xs font-mono uppercase tracking-wider ${isDark ? 'text-grey-500' : 'text-grey-500'}`}
+          >
+            L{question.saeLevel} — {levelName}
+          </span>
+        </div>
         <span
-          className={`inline-block px-3 py-1 text-xs font-mono uppercase tracking-wider
-                       rounded-full border ${isDark ? 'text-grey-500 border-grey-700' : 'text-grey-500 border-grey-300'}`}
+          className={`text-xs font-mono uppercase tracking-wider ${isDark ? 'text-grey-500' : 'text-grey-500'}`}
         >
-          L{question.saeLevel} — {levelName}
+          {questionNumber} / {totalQuestions}
         </span>
       </div>
 
@@ -50,13 +85,13 @@ export function QuestionCard({
         {question.text}
       </h2>
 
-      {/* Answer buttons */}
+      {/* Answer buttons - No on left, Yes on right */}
       <div className="flex gap-3 mb-6">
-        <button onClick={() => onAnswer(true)} className="btn-pill min-w-24">
-          Yes
-        </button>
         <button onClick={() => onAnswer(false)} className="btn-pill min-w-24">
           No
+        </button>
+        <button onClick={() => onAnswer(true)} className="btn-pill min-w-24">
+          Yes
         </button>
       </div>
 
@@ -74,7 +109,7 @@ export function QuestionCard({
               isDark ? 'text-grey-300 hover:text-grey-100' : 'text-grey-700 hover:text-grey-900'
             }`}
           >
-            {isExplanationExpanded ? 'Show less' : 'Read more'} →
+            {isExplanationExpanded ? 'Show less' : 'Read more'}
           </button>
         )}
       </div>
@@ -122,26 +157,6 @@ export function QuestionCard({
         </div>
       )}
 
-      <div className={`h-px mb-4 ${isDark ? 'bg-grey-800' : 'bg-grey-200'}`} />
-
-      {/* Progress and back button */}
-      <div
-        className={`flex items-center justify-between text-xs font-mono uppercase tracking-wider ${isDark ? 'text-grey-500' : 'text-grey-500'}`}
-      >
-        {canGoBack && onBack ? (
-          <button
-            onClick={onBack}
-            className={`transition-colors ${isDark ? 'hover:text-grey-300' : 'hover:text-grey-700'}`}
-          >
-            ← Back
-          </button>
-        ) : (
-          <span />
-        )}
-        <span>
-          {questionNumber} / {totalQuestions}
-        </span>
-      </div>
     </div>
   );
 }

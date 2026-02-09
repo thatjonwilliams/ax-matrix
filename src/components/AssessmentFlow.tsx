@@ -33,7 +33,7 @@ export function AssessmentFlow({
       </div>
 
       {/* Question area */}
-      <div className="flex-1 flex items-center">
+      <div className="pt-10">
         <div className="grid-container w-full">
           <div className="col-span-18 col-start-4 sm:col-span-full sm:col-start-1 md:col-span-full md:col-start-1">
             <QuestionCard
