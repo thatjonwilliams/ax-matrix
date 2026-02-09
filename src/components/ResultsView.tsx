@@ -45,15 +45,10 @@ export function ResultsView({ result, onRetake, isDark = true }: ResultsViewProp
 
         {/* Right column: Your Position + Keys in 2 columns */}
         <div className="md:w-1/2">
-          {/* Your Position */}
-          <div className="mb-8">
-            <p className={`text-xs font-mono tracking-wider uppercase mb-2 ${isDark ? 'text-grey-500' : 'text-grey-500'}`}>
-              Your Position
-            </p>
-            <h1 className={`text-2xl font-semibold tracking-tighter ${isDark ? 'text-grey-100' : 'text-grey-900'}`}>
-              L{result.saeLevel} {stageName}
-            </h1>
-          </div>
+          {/* Result label */}
+          <h1 className={`text-2xl font-semibold tracking-tighter mb-8 ${isDark ? 'text-grey-100' : 'text-grey-900'}`}>
+            L{result.saeLevel} {stageName}
+          </h1>
 
           {/* Summary */}
           <p className={`text-sm leading-relaxed mb-8 max-w-md ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>

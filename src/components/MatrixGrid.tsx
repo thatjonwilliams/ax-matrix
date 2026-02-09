@@ -14,10 +14,11 @@ export function MatrixGrid({ saeLevel, epiasStage, isDark = true, compact = fals
   const borderColor = isDark ? 'border-grey-600' : 'border-grey-400';
   const tickColor = isDark ? 'bg-grey-600' : 'bg-grey-400';
   const labelColor = isDark ? 'text-grey-500' : 'text-grey-500';
-  const cellSize = compact ? 32 : 48; // pixels
+  const cellSize = compact ? 40 : 56; // pixels - larger cells
   const tickLength = 6;
   const tickWidth = 1;
-  const labelGap = 12;
+  const tickGap = 2; // gap between tick and grid
+  const labelGap = 14;
 
   const gridWidth = cellSize * 6;
   const gridHeight = cellSize * 5;
@@ -90,28 +91,28 @@ export function MatrixGrid({ saeLevel, epiasStage, isDark = true, compact = fals
             />
           ))}
 
-          {/* Tick marks - left side */}
+          {/* Tick marks - left side (at horizontal grid lines) */}
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <div
               key={`tick-l-${i}`}
               className={`absolute ${tickColor}`}
               style={{
-                left: -tickLength,
-                top: cellSize * i - tickWidth / 2,
+                left: -(tickLength + tickGap),
+                top: cellSize * i,
                 width: tickLength,
                 height: tickWidth
               }}
             />
           ))}
 
-          {/* Tick marks - bottom side */}
+          {/* Tick marks - bottom side (at vertical grid lines) */}
           {[0, 1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={`tick-b-${i}`}
               className={`absolute ${tickColor}`}
               style={{
-                left: cellSize * i - tickWidth / 2,
-                bottom: -tickLength,
+                left: cellSize * i,
+                bottom: -(tickLength + tickGap),
                 width: tickWidth,
                 height: tickLength
               }}
