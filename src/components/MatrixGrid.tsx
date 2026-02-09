@@ -1,4 +1,4 @@
-import { SAELevel, EPIASStage, SAE_LEVEL_NAMES, EPIAS_STAGE_NAMES } from '../types';
+import { SAELevel, EPIASStage, EPIAS_STAGE_NAMES } from '../types';
 
 interface MatrixGridProps {
   saeLevel: SAELevel;
@@ -11,60 +11,130 @@ export function MatrixGrid({ saeLevel, epiasStage, isDark = true, compact = fals
   const saeLevels: SAELevel[] = [0, 1, 2, 3, 4, 5];
   const epiasStages: EPIASStage[] = [5, 4, 3, 2, 1]; // Top to bottom (Steward at top)
 
-  const borderColor = isDark ? 'border-grey-700' : 'border-grey-300';
-  const cellSize = compact ? 'w-6 h-6' : 'w-8 h-8';
+  const borderColor = isDark ? 'border-grey-600' : 'border-grey-400';
+  const tickColor = isDark ? 'bg-grey-600' : 'bg-grey-400';
+  const labelColor = isDark ? 'text-grey-500' : 'text-grey-500';
+  const cellSize = compact ? 32 : 48; // pixels
+  const tickLength = 6;
+  const tickWidth = 1;
+  const labelGap = 12;
+
+  const gridWidth = cellSize * 6;
+  const gridHeight = cellSize * 5;
 
   return (
     <div className="inline-block">
-      {/* Matrix table with rules */}
-      <div className={`border ${borderColor}`}>
-        {/* Column headers (SAE levels) */}
-        <div className={`flex border-b ${borderColor}`}>
-          {/* Empty corner cell */}
-          <div className={`${cellSize} flex-shrink-0`} />
-          {saeLevels.map((level, idx) => (
+      {/* Container with space for labels */}
+      <div className="relative" style={{ paddingLeft: labelGap + 16, paddingBottom: labelGap + 16 }}>
+        {/* Row labels (E-P-I-A-S) - outside left */}
+        <div
+          className="absolute left-0 flex flex-col justify-around"
+          style={{ top: 0, height: gridHeight }}
+        >
+          {epiasStages.map((stage) => (
+            <div
+              key={stage}
+              className={`text-[10px] font-mono uppercase tracking-wider ${labelColor} flex items-center justify-end`}
+              style={{ height: cellSize, paddingRight: labelGap }}
+            >
+              {EPIAS_STAGE_NAMES[stage].charAt(0)}
+            </div>
+          ))}
+        </div>
+
+        {/* Column labels (SAE levels) - outside bottom */}
+        <div
+          className="absolute flex justify-around"
+          style={{ left: labelGap + 16, bottom: 0, width: gridWidth }}
+        >
+          {saeLevels.map((level) => (
             <div
               key={level}
-              className={`${cellSize} flex-shrink-0 flex items-center justify-center text-[9px] font-mono uppercase tracking-wider ${
-                idx > 0 ? `border-l ${borderColor}` : ''
-              } ${isDark ? 'text-grey-500' : 'text-grey-500'}`}
+              className={`text-[10px] font-mono uppercase tracking-wider ${labelColor} flex items-start justify-center`}
+              style={{ width: cellSize, paddingTop: labelGap }}
             >
               L{level}
             </div>
           ))}
         </div>
 
-        {/* Grid rows */}
-        {epiasStages.map((stage, rowIdx) => (
-          <div
-            key={stage}
-            className={`flex ${rowIdx > 0 ? `border-t ${borderColor}` : ''}`}
-          >
-            {/* Row label (E-P-I-A-S stage) */}
+        {/* Main grid */}
+        <div className={`border ${borderColor} relative`} style={{ width: gridWidth, height: gridHeight }}>
+          {/* Vertical grid lines */}
+          {[1, 2, 3, 4, 5].map((i) => (
             <div
-              className={`${cellSize} flex-shrink-0 flex items-center justify-center text-[9px] font-mono uppercase tracking-wider ${isDark ? 'text-grey-500' : 'text-grey-500'}`}
-            >
-              {EPIAS_STAGE_NAMES[stage].charAt(0)}
-            </div>
+              key={`v-${i}`}
+              className={`absolute top-0 ${borderColor}`}
+              style={{
+                left: cellSize * i,
+                width: 1,
+                height: gridHeight,
+                borderLeftWidth: 1,
+                borderLeftStyle: 'solid'
+              }}
+            />
+          ))}
 
-            {/* Grid cells */}
-            {saeLevels.map((level, colIdx) => {
-              const isSelected = level === saeLevel && stage === epiasStage;
+          {/* Horizontal grid lines */}
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={`h-${i}`}
+              className={`absolute left-0 ${borderColor}`}
+              style={{
+                top: cellSize * i,
+                height: 1,
+                width: gridWidth,
+                borderTopWidth: 1,
+                borderTopStyle: 'solid'
+              }}
+            />
+          ))}
 
-              return (
-                <div
-                  key={`${stage}-${level}`}
-                  className={`${cellSize} flex-shrink-0 ${colIdx > 0 ? `border-l ${borderColor}` : ''} ${
-                    isSelected
-                      ? isDark ? 'bg-grey-100' : 'bg-grey-900'
-                      : ''
-                  }`}
-                  title={`L${level} ${SAE_LEVEL_NAMES[level]} × ${EPIAS_STAGE_NAMES[stage]}`}
-                />
-              );
-            })}
-          </div>
-        ))}
+          {/* Tick marks - left side */}
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={`tick-l-${i}`}
+              className={`absolute ${tickColor}`}
+              style={{
+                left: -tickLength,
+                top: cellSize * i - tickWidth / 2,
+                width: tickLength,
+                height: tickWidth
+              }}
+            />
+          ))}
+
+          {/* Tick marks - bottom side */}
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <div
+              key={`tick-b-${i}`}
+              className={`absolute ${tickColor}`}
+              style={{
+                left: cellSize * i - tickWidth / 2,
+                bottom: -tickLength,
+                width: tickWidth,
+                height: tickLength
+              }}
+            />
+          ))}
+
+          {/* Selected cell marker */}
+          {(() => {
+            const colIndex = saeLevel;
+            const rowIndex = 5 - epiasStage; // Convert stage to row (5=top row 0, 1=bottom row 4)
+            return (
+              <div
+                className={`absolute ${isDark ? 'bg-grey-100' : 'bg-grey-900'}`}
+                style={{
+                  left: colIndex * cellSize + 1,
+                  top: rowIndex * cellSize + 1,
+                  width: cellSize - 2,
+                  height: cellSize - 2,
+                }}
+              />
+            );
+          })()}
+        </div>
       </div>
     </div>
   );

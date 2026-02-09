@@ -37,11 +37,16 @@ export function ResultsView({ result, onRetake, isDark = true }: ResultsViewProp
   return (
     <div className="pt-24 pb-12 px-5 sm:px-10">
       {/* Two-column layout */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 md:gap-16">
-        {/* Left column: Matrix and result label */}
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 md:gap-16">
+        {/* Left column: Matrix only */}
+        <div className="md:w-1/2 flex items-start justify-center md:justify-start">
+          <MatrixGrid saeLevel={result.saeLevel} epiasStage={result.epiasStage} isDark={isDark} />
+        </div>
+
+        {/* Right column: Your Position + Keys in 2 columns */}
         <div className="md:w-1/2">
-          {/* Result label */}
-          <div className="mb-6">
+          {/* Your Position */}
+          <div className="mb-8">
             <p className={`text-xs font-mono tracking-wider uppercase mb-2 ${isDark ? 'text-grey-500' : 'text-grey-500'}`}>
               Your Position
             </p>
@@ -50,15 +55,55 @@ export function ResultsView({ result, onRetake, isDark = true }: ResultsViewProp
             </h1>
           </div>
 
-          {/* Matrix */}
-          <div className="mb-6">
-            <MatrixGrid saeLevel={result.saeLevel} epiasStage={result.epiasStage} isDark={isDark} />
-          </div>
-
           {/* Summary */}
-          <p className={`text-sm leading-relaxed mb-6 max-w-md ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
+          <p className={`text-sm leading-relaxed mb-8 max-w-md ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
             {summary}
           </p>
+
+          {/* Keys in 2 columns */}
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            {/* SAE Levels Key */}
+            <div>
+              <h2 className={`text-xs font-mono uppercase tracking-wider mb-4 ${isDark ? 'text-grey-300' : 'text-grey-700'}`}>
+                SAE Levels
+              </h2>
+              <div className="space-y-1.5">
+                {saeLevels.map((level) => (
+                  <div
+                    key={level}
+                    className={`text-sm ${
+                      level === result.saeLevel
+                        ? isDark ? 'text-grey-100 font-medium' : 'text-grey-900 font-medium'
+                        : isDark ? 'text-grey-500' : 'text-grey-500'
+                    }`}
+                  >
+                    <span className="font-mono">L{level}</span> {SAE_LEVEL_NAMES[level]}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* E-P-I-A-S Stages Key */}
+            <div>
+              <h2 className={`text-xs font-mono uppercase tracking-wider mb-4 ${isDark ? 'text-grey-300' : 'text-grey-700'}`}>
+                E-P-I-A-S Stages
+              </h2>
+              <div className="space-y-1.5">
+                {epiasStages.map((stage) => (
+                  <div
+                    key={stage}
+                    className={`text-sm ${
+                      stage === result.epiasStage
+                        ? isDark ? 'text-grey-100 font-medium' : 'text-grey-900 font-medium'
+                        : isDark ? 'text-grey-500' : 'text-grey-500'
+                    }`}
+                  >
+                    <span className="font-mono">{EPIAS_STAGE_NAMES[stage].charAt(0)}</span> {EPIAS_STAGE_NAMES[stage]}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* Actions */}
           <div className="flex flex-wrap gap-3 mb-4">
@@ -80,51 +125,6 @@ export function ResultsView({ result, onRetake, isDark = true }: ResultsViewProp
           >
             Retake Assessment
           </button>
-        </div>
-
-        {/* Right column: Keys */}
-        <div className="md:w-1/2">
-          {/* SAE Levels Key */}
-          <div className="mb-8">
-            <h2 className={`text-xs font-mono uppercase tracking-wider mb-4 ${isDark ? 'text-grey-300' : 'text-grey-700'}`}>
-              SAE Levels
-            </h2>
-            <div className="space-y-2">
-              {saeLevels.map((level) => (
-                <div
-                  key={level}
-                  className={`text-sm ${
-                    level === result.saeLevel
-                      ? isDark ? 'text-grey-100 font-medium' : 'text-grey-900 font-medium'
-                      : isDark ? 'text-grey-500' : 'text-grey-500'
-                  }`}
-                >
-                  <span className="font-mono">L{level}</span> — {SAE_LEVEL_NAMES[level]}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* E-P-I-A-S Stages Key */}
-          <div>
-            <h2 className={`text-xs font-mono uppercase tracking-wider mb-4 ${isDark ? 'text-grey-300' : 'text-grey-700'}`}>
-              E-P-I-A-S Stages
-            </h2>
-            <div className="space-y-2">
-              {epiasStages.map((stage) => (
-                <div
-                  key={stage}
-                  className={`text-sm ${
-                    stage === result.epiasStage
-                      ? isDark ? 'text-grey-100 font-medium' : 'text-grey-900 font-medium'
-                      : isDark ? 'text-grey-500' : 'text-grey-500'
-                  }`}
-                >
-                  <span className="font-mono">{EPIAS_STAGE_NAMES[stage].charAt(0)}</span> — {EPIAS_STAGE_NAMES[stage]}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
 
