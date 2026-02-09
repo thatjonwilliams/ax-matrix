@@ -64,7 +64,7 @@ export function QuestionCard({
 
       {/* Explanation section */}
       <div className="mb-4">
-        <p className={`text-sm leading-relaxed ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
+        <p className={`prose text-sm leading-relaxed ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
           {isExplanationExpanded || !shouldTruncate ? question.explanation : truncatedExplanation}
         </p>
         {shouldTruncate && (

@@ -42,7 +42,7 @@ export function GlossaryPage({ isDark = true, onBack }: GlossaryPageProps) {
                 >
                   {item.term}
                 </dt>
-                <dd className={`text-sm leading-relaxed ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
+                <dd className={`prose text-sm leading-relaxed ${isDark ? 'text-grey-400' : 'text-grey-600'}`}>
                   {item.definition}
                 </dd>
               </div>
